@@ -6,7 +6,9 @@ export const handler = async (event, context) => {
       url: event.rawUrl || '/',
       headers: event.headers,
       method: event.httpMethod,
+      query: event.queryStringParameters || {}, // <<<<< important fix
     };
+
     const res = {
       statusCode: 200,
       headers: {},
@@ -18,6 +20,6 @@ export const handler = async (event, context) => {
       },
     };
 
-    api(req, res); // call Vercel-style handler
+    api(req, res); // call original Vercel-style API
   });
 };
