@@ -1,8 +1,6 @@
-const { createServer } = require('http');
-const { parse } = require('url');
-const api = require('../../api/index'); // adjust relative path
+import api from '../../api/index.js';
 
-exports.handler = async (event, context) => {
+export const handler = async (event, context) => {
   return new Promise((resolve) => {
     const req = {
       url: event.rawUrl || '/',
@@ -20,6 +18,6 @@ exports.handler = async (event, context) => {
       },
     };
 
-    api(req, res);
+    api(req, res); // call Vercel-style handler
   });
 };
