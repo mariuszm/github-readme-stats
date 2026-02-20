@@ -1,0 +1,11 @@
+[build]
+  command = "npm install"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/api/top-langs"
+  to = "/.netlify/functions/top-langs"
+  status = 200
