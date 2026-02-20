@@ -1,15 +1,20 @@
-import api from '../../api/index.js';
+// top-langs.mjs
+import api from '../../api/index.js'; // path to the original Vercel repo api/index.js
 
 export const handler = async (event, context) => {
   return new Promise((resolve) => {
-    // simulate req/res like Vercel
+    // Build a Vercel-style req object
     const req = {
       url: event.rawUrl || '/',
-      headers: event.headers,
       method: event.httpMethod,
-      query: event.queryStringParameters || {},
+      headers: {
+        ...event.headers,
+        accept: 'image/svg+xml', // ensures SVG card output
+      },
+      query: event.queryStringParameters || {}, // all query params
     };
 
+    // Build a Vercel-style res object with polyfills
     const res = {
       statusCode: 200,
       headers: {},
@@ -21,11 +26,12 @@ export const handler = async (event, context) => {
     };
 
     try {
-      api(req, res); // call original Vercel-style API
+      api(req, res); // call the original API
     } catch (err) {
-      console.error(err);
+      console.error('Netlify function error:', err);
       resolve({
         statusCode: 500,
+        headers: { 'Content-Type': 'text/plain' },
         body: 'Internal Server Error',
       });
     }
